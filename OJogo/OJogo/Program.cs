@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.Design;
+using System.Runtime.CompilerServices;
 
 public class Program
+
 {
     public static void Main(string[] args)
     {
@@ -12,43 +14,22 @@ public class Program
         int jogarNovamente = 0;
         int placarX = 0, placarO = 0;
         int jogadores = 1;
-        
+
         Console.WriteLine("Bem-vindo ao jogo da velha!");
         Console.WriteLine("Com quantos jogadores você quer jogar? (1 ou 2)");
         jogadores = int.Parse(Console.ReadLine());
 
         if (jogadores == 2)
         {
-                        Console.WriteLine("Jogo para 2 jogadores selecionado.");
+            Console.WriteLine("Jogo para 2 jogadores selecionado.");
             do
             {
-                tabuleiro[0, 0] = " ";
-                tabuleiro[0, 1] = " ";
-                tabuleiro[0, 2] = " ";
-                tabuleiro[1, 0] = " ";
-                tabuleiro[1, 1] = " ";
-                tabuleiro[1, 2] = " ";
-                tabuleiro[2, 0] = " ";
-                tabuleiro[2, 1] = " ";
-                tabuleiro[2, 2] = " ";
+                
+                LimparTabuleiro(tabuleiro);
 
+                MostrarTabuleiroVazio();
 
-                Console.WriteLine("   | |  ");
-                Console.WriteLine(" --+-+--- "); 
-                Console.WriteLine("   | |  ");
-                Console.WriteLine(" --+-+--- ");
-                Console.WriteLine("   | |  ");
-
-                do
-                {
-                    Console.WriteLine("Quem começa? Digite 'X' ou 'O' ");
-                    jogadorDaVez = char.Parse(Console.ReadLine());
-                    if (jogadorDaVez != 'X' && jogadorDaVez != 'O')
-                    {
-                        Console.WriteLine("Jogador inválido! Tente novamente.");
-                    }
-                } while (jogadorDaVez != 'X' && jogadorDaVez != 'O');
-
+                DefinirSimbolo(jogadorDaVez);
                 do
                 {
                     do
@@ -170,8 +151,76 @@ public class Program
         {
             Console.WriteLine("Jogo para 1 jogador selecionado.");
             Console.WriteLine("Voce jogará com a máquina.");
-        }
-    }
-} 
 
-           
+            LimparTabuleiro(tabuleiro);
+
+            MostrarTabuleiroVazio();
+
+            DefinirSimbolo(jogadorDaVez);
+
+
+
+        }
+
+         
+
+
+    }
+
+    private static void MostrarTabuleiroVazio()
+    {
+        Console.WriteLine("   | |  ");
+        Console.WriteLine(" --+-+--- ");
+        Console.WriteLine("   | |  ");
+        Console.WriteLine(" --+-+--- ");
+        Console.WriteLine("   | |  ");
+    }
+
+    private static void LimparTabuleiro(string[,] tabuleiro)
+    {
+
+        tabuleiro[0, 0] = " ";
+        tabuleiro[0, 1] = " ";
+        tabuleiro[0, 2] = " ";
+        tabuleiro[1, 0] = " ";
+        tabuleiro[1, 1] = " ";
+        tabuleiro[1, 2] = " ";
+        tabuleiro[2, 0] = " ";
+        tabuleiro[2, 1] = " ";
+        tabuleiro[2, 2] = " ";
+
+    }
+
+    private static void DefinirSimbolo(char jogadorDaVez)
+    {
+        do
+        {
+            Console.WriteLine("Quem começa? Digite 'X' ou 'O' ");
+            jogadorDaVez = char.Parse(Console.ReadLine());
+            if (jogadorDaVez != 'X' && jogadorDaVez != 'O')
+            {
+                Console.WriteLine("Jogador inválido! Tente novamente.");
+            }
+        } while (jogadorDaVez != 'X' && jogadorDaVez != 'O');
+    }
+}
+
+
+/*
+          *Visibilidade:
+          * publica - public
+          * privada - private (so a classe consegue acessar)
+          * protected - todo o pacote tem acesso
+          * 
+          * 
+          * 
+          *Tipos de retorno;
+          * int, double, float, char, string, bool, void 
+          * (vazio - nao retorna nada)
+        
+         visibilidade tipoDeRetorno nomeDaFuncao(parametros)
+         {
+
+         }
+         */
+
