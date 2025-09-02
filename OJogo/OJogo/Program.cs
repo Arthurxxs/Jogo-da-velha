@@ -34,7 +34,7 @@ public class Program
 
 
                 Console.WriteLine("   | |  ");
-                Console.WriteLine(" --+-+--- ");
+                Console.WriteLine(" --+-+--- "); 
                 Console.WriteLine("   | |  ");
                 Console.WriteLine(" --+-+--- ");
                 Console.WriteLine("   | |  ");
