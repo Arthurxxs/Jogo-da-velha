@@ -13,6 +13,7 @@ public class Program
         int jogarNovamente = 0;
         int placarX = 0, placarO = 0;
         int jogadores = 1;
+        bool maquinaVez = false;
 
         Console.WriteLine("Bem-vindo ao jogo da velha!");
         Console.WriteLine("Com quantos jogadores você quer jogar? (1 ou 2)");
@@ -24,7 +25,7 @@ public class Program
             Console.WriteLine("Jogo para 2 jogadores selecionado.");
             do
             {
-                DefinirSimbolo(jogadorDaVez);
+                DefinirSimbolo(ref jogadorDaVez);
 
                 LimparTabuleiro(tabuleiro);
 
@@ -36,44 +37,13 @@ public class Program
                     
                    
                     
-                        EscolherPosicao(ref jogadorDaVez, ref deuCerto, ref posicaoLinha, ref posicaoColuna, ref tabuleiro, ref qttJogadas);
+                        EscolherPosicao(ref jogadorDaVez, ref deuCerto, ref posicaoLinha, ref posicaoColuna, ref tabuleiro, ref qttJogadas, ref maquinaVez);
 
-                        
 
-                        if ((tabuleiro[0, 0] == "X" && tabuleiro[0, 1] == "X" && tabuleiro[0, 2] == "X") ||
-                            (tabuleiro[1, 0] == "X" && tabuleiro[1, 1] == "X" && tabuleiro[1, 2] == "X") ||
-                            (tabuleiro[2, 0] == "X" && tabuleiro[2, 1] == "X" && tabuleiro[2, 2] == "X") ||
-                            (tabuleiro[0, 0] == "X" && tabuleiro[1, 0] == "X" && tabuleiro[2, 0] == "X") ||
-                            (tabuleiro[0, 1] == "X" && tabuleiro[1, 1] == "X" && tabuleiro[2, 1] == "X") ||
-                            (tabuleiro[0, 2] == "X" && tabuleiro[1, 2] == "X" && tabuleiro[2, 2] == "X") ||
-                            (tabuleiro[0, 0] == "X" && tabuleiro[1, 1] == "X" && tabuleiro[2, 2] == "X") ||
-                            (tabuleiro[0, 2] == "X" && tabuleiro[1, 1] == "X" && tabuleiro[2, 0] == "X"))
-                        {
-                            Console.WriteLine("Jogador X venceu!");
-                            houveGanhador = true;
-                            placarX++;
-                            break;
-                        }
-                        else if ((tabuleiro[0, 0] == "O" && tabuleiro[0, 1] == "O" && tabuleiro[0, 2] == "O") ||
-                                 (tabuleiro[2, 0] == "O" && tabuleiro[2, 1] == "O" && tabuleiro[2, 2] == "O") ||
-                                 (tabuleiro[0, 0] == "O" && tabuleiro[1, 0] == "O" && tabuleiro[2, 0] == "O") ||
-                                 (tabuleiro[0, 1] == "O" && tabuleiro[1, 1] == "O" && tabuleiro[2, 1] == "O") ||
-                                 (tabuleiro[0, 2] == "O" && tabuleiro[1, 2] == "O" && tabuleiro[2, 2] == "O") ||
-                                 (tabuleiro[0, 0] == "O" && tabuleiro[1, 1] == "O" && tabuleiro[2, 2] == "O") ||
-                                 (tabuleiro[1, 0] == "O" && tabuleiro[1, 1] == "O" && tabuleiro[1, 2] == "O") ||
-                                 (tabuleiro[0, 2] == "O" && tabuleiro[1, 1] == "O" && tabuleiro[2, 0] == "O"))
-                        {
-                            Console.WriteLine("Jogador O venceu!");
-                            houveGanhador = true;
-                            placarO++;
-                            break;
-                        }
-                        else if (qttJogadas == 10)
-                        {
-                            houveGanhador = false;
-                            Console.WriteLine("Deu velha!");
-                        }
-                    
+
+                    verificadorGanhador(ref tabuleiro, ref houveGanhador, ref placarX, ref placarO, ref qttJogadas);
+
+
 
                 } while (qttJogadas <= 9);
 
@@ -96,16 +66,62 @@ public class Program
             Console.WriteLine("Jogo para 1 jogador selecionado.");
             Console.WriteLine("Voce jogará com a máquina.");
 
-            Console.WriteLine("Escolha seu símbolo: 'X' ou 'O'");
-            jogadorDaVez = char.Parse(Console.ReadLine());
-            DefinirSimbolo(jogadorDaVez);
+            
+            
+            DefinirSimbolo(ref jogadorDaVez);
 
             LimparTabuleiro(tabuleiro);
+
+            
+
             do
             {
+
+                if (maquinaVez == true)
+                {
+                    bool maquinaPrencheu = false;
+                    do
+                    {
+                        Random random = new Random();
+                        int Linha = random.Next(0, 3);
+                        int Coluna = random.Next(0, 3);
+
+                        if (tabuleiro[Linha, Coluna] == " ")
+                        {
+                            tabuleiro[Linha, Coluna] = jogadorDaVez.ToString();
+                            if (jogadorDaVez == 'X')
+                            {
+                                jogadorDaVez = 'O';
+                            }
+                            else
+                            {
+                                jogadorDaVez = 'X';
+                            }
+                            maquinaPrencheu = true;
+                            maquinaVez = false;
+                            qttJogadas++;
+
+                        }
+                    } while (maquinaPrencheu == false);
+
+                    Console.WriteLine("Vez da máquina.");
+                    maquinaVez = false;
+                }
+                else
+                {
+                    EscolherPosicao(ref jogadorDaVez, ref deuCerto, ref posicaoLinha, ref posicaoColuna, ref tabuleiro, ref qttJogadas, ref maquinaVez);
+
+                }
+                verificadorGanhador(ref tabuleiro, ref houveGanhador, ref placarX, ref placarO, ref qttJogadas);
+                if(houveGanhador == true)
+                {
+                    break;
+                }
+
+                MostrarTabuleiroPreenchido(tabuleiro); 
                 
 
-                EscolherPosicao(ref jogadorDaVez, ref deuCerto, ref posicaoLinha, ref posicaoColuna, ref tabuleiro, ref qttJogadas);
+
 
 
             } while (qttJogadas <= 9);
@@ -137,7 +153,7 @@ public class Program
 
     }
 
-    private static void DefinirSimbolo(char jogadorDaVez)
+    private static void DefinirSimbolo(ref char jogadorDaVez)
     {
         do
         {
@@ -151,7 +167,7 @@ public class Program
         } while (jogadorDaVez != 'X' && jogadorDaVez != 'O');
     }
 
-    private static void EscolherPosicao(ref char jogadorDaVez, ref bool DeuCerto, ref int posicaoLinha, ref int posicaoColuna, ref string[,] tabuleiro, ref int qttJogadas)
+    private static void EscolherPosicao(ref char jogadorDaVez, ref bool DeuCerto, ref int posicaoLinha, ref int posicaoColuna, ref string[,] tabuleiro, ref int qttJogadas, ref bool maquinaVez)
     {
         do
         {
@@ -197,12 +213,10 @@ public class Program
                     jogadorDaVez = 'X';
                 }
                 qttJogadas++;
-                Console.Clear();
-                Console.WriteLine(" {0} | {1} | {2} ", tabuleiro[0, 0], tabuleiro[0, 1], tabuleiro[0, 2]);
-                Console.WriteLine("---+---+---");
-                Console.WriteLine(" {0} | {1} | {2} ", tabuleiro[1, 0], tabuleiro[1, 1], tabuleiro[1, 2]);
-                Console.WriteLine("---+---+---");
-                Console.WriteLine(" {0} | {1} | {2} ", tabuleiro[2, 0], tabuleiro[2, 1], tabuleiro[2, 2]);
+
+                maquinaVez = true;
+
+                
             }
             else
             {
@@ -211,6 +225,65 @@ public class Program
 
 
         }
+    }
+    private static void verificadorGanhador(ref string[,] tabuleiro, ref bool houveGanhador, ref int placarX, ref int placarO, ref int qttJogadas)
+    {
+        if ((tabuleiro[0, 0] == "X" && tabuleiro[0, 1] == "X" && tabuleiro[0, 2] == "X") ||
+                            (tabuleiro[1, 0] == "X" && tabuleiro[1, 1] == "X" && tabuleiro[1, 2] == "X") ||
+                            (tabuleiro[2, 0] == "X" && tabuleiro[2, 1] == "X" && tabuleiro[2, 2] == "X") ||
+                            (tabuleiro[0, 0] == "X" && tabuleiro[1, 0] == "X" && tabuleiro[2, 0] == "X") ||
+                            (tabuleiro[0, 1] == "X" && tabuleiro[1, 1] == "X" && tabuleiro[2, 1] == "X") ||
+                            (tabuleiro[0, 2] == "X" && tabuleiro[1, 2] == "X" && tabuleiro[2, 2] == "X") ||
+                            (tabuleiro[0, 0] == "X" && tabuleiro[1, 1] == "X" && tabuleiro[2, 2] == "X") ||
+                            (tabuleiro[0, 2] == "X" && tabuleiro[1, 1] == "X" && tabuleiro[2, 0] == "X"))
+        {
+            Console.WriteLine("Jogador X venceu!");
+            houveGanhador = true;
+
+            
+            
+        
+            
+                placarX++;
+                
+        }
+            else if ((tabuleiro[0, 0] == "O" && tabuleiro[0, 1] == "O" && tabuleiro[0, 2] == "O") ||
+                     (tabuleiro[2, 0] == "O" && tabuleiro[2, 1] == "O" && tabuleiro[2, 2] == "O") ||
+                     (tabuleiro[0, 0] == "O" && tabuleiro[1, 0] == "O" && tabuleiro[2, 0] == "O") ||
+                     (tabuleiro[0, 1] == "O" && tabuleiro[1, 1] == "O" && tabuleiro[2, 1] == "O") ||
+                     (tabuleiro[0, 2] == "O" && tabuleiro[1, 2] == "O" && tabuleiro[2, 2] == "O") ||
+                     (tabuleiro[0, 0] == "O" && tabuleiro[1, 1] == "O" && tabuleiro[2, 2] == "O") ||
+                     (tabuleiro[1, 0] == "O" && tabuleiro[1, 1] == "O" && tabuleiro[1, 2] == "O") ||
+                     (tabuleiro[0, 2] == "O" && tabuleiro[1, 1] == "O" && tabuleiro[2, 0] == "O"))
+            {
+                Console.WriteLine("Jogador O venceu!");
+                houveGanhador = true;
+               
+                placarO++;
+                
+            }
+            else if (qttJogadas == 10)
+            {
+                houveGanhador = false;
+                Console.WriteLine("Deu velha!");
+            }
+            
+            
+    }
+
+    private static void MostrarPlacar(int placarX, int placarO)
+    {
+        Console.WriteLine("Placar do jogador X: " + placarX);
+        Console.WriteLine("Placar do jogador O" + placarO);
+    }
+
+    private static void MostrarTabuleiroPreenchido(string[,] tabuleiro)
+    {
+        Console.WriteLine(" {0} | {1} | {2} ", tabuleiro[0, 0], tabuleiro[0, 1], tabuleiro[0, 2]);
+        Console.WriteLine("---+---+---");
+        Console.WriteLine(" {0} | {1} | {2} ", tabuleiro[1, 0], tabuleiro[1, 1], tabuleiro[1, 2]);
+        Console.WriteLine("---+---+---");
+        Console.WriteLine(" {0} | {1} | {2} ", tabuleiro[2, 0], tabuleiro[2, 1], tabuleiro[2, 2]);
     }
 }
 
