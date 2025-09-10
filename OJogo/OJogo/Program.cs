@@ -38,25 +38,31 @@ public class Program
                    
                     
                         EscolherPosicao(ref jogadorDaVez, ref deuCerto, ref posicaoLinha, ref posicaoColuna, ref tabuleiro, ref qttJogadas, ref maquinaVez);
+                   
+                       MostrarTabuleiroPreenchido(tabuleiro);
 
+                       verificadorGanhador(ref tabuleiro, ref houveGanhador, ref placarX, ref placarO, ref qttJogadas);
 
+                    if (houveGanhador == true)
+                    {
+                        houveGanhador = false; 
+                        break;
 
-                    verificadorGanhador(ref tabuleiro, ref houveGanhador, ref placarX, ref placarO, ref qttJogadas);
-
+                    }
 
 
                 } while (qttJogadas <= 9);
 
                 qttJogadas = 1;
 
-                if (houveGanhador == true)
-                {
-                    Console.WriteLine("Deseja jogar novamente? Digite 0 para não ou 1 para sim.");
-                    jogarNovamente = int.Parse(Console.ReadLine());
-                }
+                
 
                 Console.WriteLine("Placar do jogador X: " + placarX);
                 Console.WriteLine("Placar do jogador O: " + placarO);
+
+                Console.WriteLine("Deseja jogar novamente? Digite 0 para não ou 1 para sim.");
+                jogarNovamente = int.Parse(Console.ReadLine());
+
             } while (houveGanhador == false || jogarNovamente == 1);
 
         }
